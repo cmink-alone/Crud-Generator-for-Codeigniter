@@ -277,8 +277,14 @@ class Codegen extends CI_Controller {
               
                 // create view/form, TODO, make this a function! and make a stop overwriting files
                 
-                //VIEW/LIST FORM
+                //VIEW/LIST 
                 $list_v = file_get_contents('templates/list.php');
+                $search = array('{table}');
+                $replace = array(
+                                    $this->input->post('table')
+                                );
+
+                $list_v = str_replace($search, $replace, $list_v);                
                 
                 $list_content = str_replace('{controller_name_l}',$this->input->post('controller'),$list_v);
                 
@@ -301,7 +307,7 @@ class Codegen extends CI_Controller {
                                 'Controller' => array($file_controller, $c_content),
                                 'view_edit'  => array($v_path.$this->input->post('view').'_edit.php', $edit_content),
                                 'view_list'  => array($v_path.$this->input->post('view').'_list.php', $list_content),
-                                'view_add'  => array($v_path.$this->input->post('view').'_add.php', $add_content),
+                                'view_add'   => array($v_path.$this->input->post('view').'_add.php', $add_content),
                                //'form_validation'  => array($file_validation, $form_content) 
                                 );
                 foreach($write_files as $wf)
