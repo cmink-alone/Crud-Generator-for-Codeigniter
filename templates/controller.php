@@ -114,10 +114,11 @@ class {controller_name} extends MY_Controller
         //$this->template->load('content', '{view}_edit', $this->data);
     }
 	
-    function delete(){
+    function delete()
+    {
             $ID =  $this->uri->segment(3);
-            $this->{model_name_1}->delete('{table}','{primaryKey}',$ID);             
-            redirect(base_url().'index.php/{controller_name_l}/index/');
+            $this->{model_name_1}->delete($ID);             
+            redirect(site_url('{controller_name_l}/index'));
     }
 }
 
