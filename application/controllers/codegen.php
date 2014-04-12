@@ -302,7 +302,7 @@ class Codegen extends CI_Controller {
                                 'view_edit'  => array($v_path.$this->input->post('view').'_edit.php', $edit_content),
                                 'view_list'  => array($v_path.$this->input->post('view').'_list.php', $list_content),
                                 'view_add'  => array($v_path.$this->input->post('view').'_add.php', $add_content),
-                               'form_validation'  => array($file_validation, $form_content) 
+                               //'form_validation'  => array($file_validation, $form_content) 
                                 );
                 foreach($write_files as $wf)
                 {

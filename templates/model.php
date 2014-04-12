@@ -6,7 +6,7 @@ class  {table}_model extends MY_Model
     protected $_primary_key     ='{primaryKey}';
     protected $_order_by        ='{primaryKey}';
     // protected $_primary_filter  ='';
-    protected $_timestamps      =FALSE;    
+    protected $_timestamps      =TRUE;    
     // rules
     public $rules = array(
                     {form_data}

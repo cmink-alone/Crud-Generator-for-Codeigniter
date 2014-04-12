@@ -51,11 +51,12 @@ class {controller_name} extends MY_Controller
 		
     }
 	
-    function add(){        
+    function add()
+    {        
         $this->load->library('form_validation');    
 		$this->data['custom_error'] = '';
-		
-        if ($this->form_validation->run('{validation_name}') == false)
+        $this->form_validation->set_rules($this->{model_name_1}->rules);
+        if ($this->form_validation->run() == false)
         {
              $this->data['custom_error'] = (validation_errors() ? '<div class="form_error">'.validation_errors().'</div>' : false);
 
@@ -69,7 +70,7 @@ class {controller_name} extends MY_Controller
 			{
 				//$this->data['custom_error'] = '<div class="form_ok"><p>Added</p></div>';
 				// or redirect
-				redirect(base_url().'index.php/{controller_name_l}/index/');
+				redirect(site_url('{controller_name_l}/index'));
 			}
 			else
 			{
@@ -81,7 +82,8 @@ class {controller_name} extends MY_Controller
         //$this->template->load('content', '{view}_add', $this->data);
     }	
     
-    function edit(){        
+    function edit()
+    {        
         $this->load->library('form_validation');    
 		$this->data['custom_error'] = '';
 		$this->form_validation->set_rules($this->{model_name_1}->rules);
