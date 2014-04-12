@@ -1,3 +1,5 @@
+<h2>{table}</h2>
+
 <?php     
 
 echo form_open(current_url()); ?>

@@ -291,14 +291,31 @@ class Codegen extends CI_Controller {
  
                 
                 //ADD FORM
+                //VIEW/LIST 
                 $add_v = file_get_contents('templates/add.php');
+                $search = array('{table}');
+                $replace = array(
+                                    $this->input->post('table')
+                                );
+
+                $add_v = str_replace($search, $replace, $add_v);
                 
-                $add_content = str_replace('{forms_inputs}',implode("\n",$add_form),$add_v);
+                $add_v_content = str_replace('{controller_name_l}',$this->input->post('controller'),$add_v);
+                
+                $add_content = str_replace('{forms_inputs}',implode("\n",$add_form),$add_v_content);
                 
                 //EDIT FORM
                 $edit_v = file_get_contents('templates/edit.php');
-                $edit_search = array('{forms_inputs}','{primary}');
-                $edit_replace = array(implode("\n",$edit_form),'<?php echo form_hidden(\''.$this->input->post('primaryKey').'\',$result->'.$this->input->post('primaryKey').') ?>');
+                $edit_search = array(
+                                        '{forms_inputs}',
+                                        '{primary}',
+                                        '{table}',
+                                    );
+                $edit_replace = array(
+                                        implode("\n",$edit_form),
+                                        '<?php echo form_hidden(\''.$this->input->post('primaryKey').'\',$result->'.$this->input->post('primaryKey').') ?>',
+                                        $this->input->post('table')
+                                    );
                 
                 $edit_content = str_replace($edit_search,$edit_replace,$edit_v);
                 

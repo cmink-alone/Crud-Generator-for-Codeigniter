@@ -1,3 +1,5 @@
+<h2>{table}</h2>
+
 <?php // Change the css classes to suit your needs    
 
 $attributes = array('class' => '', 'id' => '');

@@ -1,4 +1,5 @@
 <h2>{table}</h2>
+
 <?php
 echo anchor(base_url().'index.php/{controller_name_l}/add/','Add');
 if(!$results){
