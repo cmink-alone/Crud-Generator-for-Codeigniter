@@ -14,11 +14,13 @@
 class Codegen extends CI_Controller {
 
 
-    function index(){
+    function index()
+    {
         $data = '';
         $this->load->library('form_validation');
 		$this->load->database();
 		$this->load->helper('url');
+        // load the form
         if ($this->input->post('table_data') || !$_POST)
         {
             // get table data
@@ -27,7 +29,8 @@ class Codegen extends CI_Controller {
             if ($this->form_validation->run() == false)
             {
 				
-            } else
+            }
+            else
             {
 
                 $table = $this->db->list_tables();
@@ -42,7 +45,9 @@ class Codegen extends CI_Controller {
             
             $this->load->view('codegen', $data);
 
-        } else
+        }
+        // Generate the file
+        else
             if ($this->input->post('generate'))
             {
                 $this->load->helper('file');
@@ -59,14 +64,17 @@ class Codegen extends CI_Controller {
                 //checking of files if they existed. comment if you want to overwrite files!
                 $err = 0;
                 /*** // uncomment me to allow overwrites
-                foreach($all_files as $af){
-                    if($this->fexist($af)){
+                foreach($all_files as $af)
+                {
+                    if($this->fexist($af))
+                    {
                         $err++;
                         echo $this->fexist($af)."<br>";    
                     }
                 }
                 
-                if($err > 0){
+                if($err > 0)
+                {
 					echo 'Files Exists - Generator stopped.<br>';
                     echo '<h3>Post Data Below:</h3><br>';
                     echo '<pre>';
@@ -80,66 +88,76 @@ class Codegen extends CI_Controller {
                 $type = $this->input->post('type');
                 
                 
-                // looping of labels and forms , for edit and add
-                foreach($label as $k => $v){
-                    if($type[$k][0] != 'exclude'){
-                    $labels[] = $v;
-                    $form_fields[] = $k;
-                    if($rules[$k][0] != 'required'){
-                        $required = '';
-                    }else{
-                        $required = '<span class="required">*</span>';        
-                    }
-                    // this will create a form for Add and Edit , quite dirty for now
-                    if($type[$k][0] == 'textarea'){
-                         $add_form[] = '
-                                    <p><label for="'.$k.'">'.$v.$required.'</label>                                
-                                    <textarea id="'.$k.'" name="'.$k.'"><?php echo set_value(\''.$k.'\'); ?></textarea>
-                                    <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
-                                    </p>
-                                    ';
+                // looping of labels and forms , for edit and add form
+                foreach($label as $k => $v)
+                {
+                    
+                    if($type[$k][0] != 'exclude')
+                    {
+                        $labels[] = $v;
+                        $form_fields[] = $k;
+                        if($rules[$k][0] != 'required')
+                        {
+                            $required = '';
+                        }
+                        else
+                        {
+                            $required = '<span class="required">*</span>';        
+                        }
+                        // this will create a form for Add and Edit , quite dirty for now
+                        if($type[$k][0] == 'textarea')
+                        {
+                             $add_form[] = '
+                                        <p><label for="'.$k.'">'.$v.$required.'</label>                                
+                                        <textarea id="'.$k.'" name="'.$k.'"><?php echo set_value(\''.$k.'\'); ?></textarea>
+                                        <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
+                                        </p>
+                                        ';
+                                        
+                             $edit_form[] = '
+                                        <p><label for="'.$k.'">'.$v.$required.'</label>                                
+                                        <textarea id="'.$k.'" name="'.$k.'"><?php echo $result->'.$k.' ?></textarea>
+                                        <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
+                                        </p>
+                                        ';                                    
                                     
-                         $edit_form[] = '
-                                    <p><label for="'.$k.'">'.$v.$required.'</label>                                
-                                    <textarea id="'.$k.'" name="'.$k.'"><?php echo $result->'.$k.' ?></textarea>
-                                    <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
-                                    </p>
-                                    ';                                    
-                                    
-                    }else if($this->input->post($k.'default')){
-                        $enum = explode(',',$this->input->post($k.'default'));
-                         $add_form[] = '
-                                    <p><label for="'.$k.'">'.$v.$required.'</label>                                
-                                    <?php
-                                    $enum = array('.$this->input->post($k.'default').'); 
-                                    echo form_dropdown(\''.$k.'\', $enum); 
-                                    ?>
-                                    <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
-                                    </p>
-                                    ';
-                        $edit_form[] = '
-                                    <p><label for="'.$k.'">'.$v.$required.'</label>
-                                    <?php
-                                    $enum = array('.$this->input->post($k.'default').');                                                                    
-                                    echo form_dropdown(\''.$k.'\', $enum,$result->'.$k.'); ?>
-                                    <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
-                                    </p>
-                                    ';                                    
-                    }
-                    else{
-                        //input
-                        $add_form[] = '
-                                    <p><label for="'.$k.'">'.$v.$required.'</label>                                
-                                    <input id="'.$k.'" type="'.$type[$k][0].'" name="'.$k.'" value="<?php echo set_value(\''.$k.'\'); ?>"  />
-                                    <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
-                                    </p>
-                                    ';
-                        $edit_form[] = '
-                                    <p><label for="'.$k.'">'.$v.$required.'</label>                                
-                                    <input id="'.$k.'" type="'.$type[$k][0].'" name="'.$k.'" value="<?php echo $result->'.$k.' ?>"  />
-                                    <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
-                                    </p>
-                                    ';
+                        }
+                        else if($this->input->post($k.'default'))
+                        {
+                            $enum = explode(',',$this->input->post($k.'default'));
+                             $add_form[] = '
+                                        <p><label for="'.$k.'">'.$v.$required.'</label>                                
+                                        <?php
+                                        $enum = array('.$this->input->post($k.'default').'); 
+                                        echo form_dropdown(\''.$k.'\', $enum); 
+                                        ?>
+                                        <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
+                                        </p>
+                                        ';
+                            $edit_form[] = '
+                                        <p><label for="'.$k.'">'.$v.$required.'</label>
+                                        <?php
+                                        $enum = array('.$this->input->post($k.'default').');                                                                    
+                                        echo form_dropdown(\''.$k.'\', $enum,$result->'.$k.'); ?>
+                                        <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
+                                        </p>
+                                        ';                                    
+                        }
+                        else
+                        {
+                            //input
+                            $add_form[] = '
+                                        <p><label for="'.$k.'">'.$v.$required.'</label>                                
+                                        <input id="'.$k.'" type="'.$type[$k][0].'" name="'.$k.'" value="<?php echo set_value(\''.$k.'\'); ?>"  />
+                                        <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
+                                        </p>
+                                        ';
+                            $edit_form[] = '
+                                        <p><label for="'.$k.'">'.$v.$required.'</label>                                
+                                        <input id="'.$k.'" type="'.$type[$k][0].'" name="'.$k.'" value="<?php echo $result->'.$k.' ?>"  />
+                                        <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
+                                        </p>
+                                        ';
                         }
                     }
                 }
@@ -147,13 +165,17 @@ class Codegen extends CI_Controller {
                 // this will ensure that the primary key will be selected first.
                 $fields_list[] = $this->input->post('primaryKey');
                 // looping of rules 
-                foreach($rules as $k => $v){
+                foreach($rules as $k => $v)
+                {
                     $rules_array = array();
-                    if($type[$k][0] != 'exclude'){
+                    if($type[$k][0] != 'exclude')
+                    {
                         
-                        foreach($rules[$k] as $k1 => $v1){
-                            if($v1){
-                            $rules_array[] = $v1;
+                        foreach($rules[$k] as $k1 => $v1)
+                        {
+                            if($v1)
+                            {
+                                $rules_array[] = $v1;
                             }
                         }
                         $form_rules = implode('|',$rules_array);
@@ -179,12 +201,14 @@ class Codegen extends CI_Controller {
                // $replace_form = array($this->input->post('validation'),$form_data);
 				$form_validation_data = "'".$this->input->post('table')."' => array(".$form_data.")";
 				
-				if(file_exists('application/config/form_validation.php')){
+				if(file_exists('application/config/form_validation.php'))
+                {
 					$form_v = file_get_contents('application/config/form_validation.php');
 					 $old_form =  str_replace(array('<?php','?>','$config = array(',');'),'',$form_v)."\t\t\t\t,\n\n\t\t\t\t";
 					include('application/config/form_validation.php');
 					
-					if(isset($config[$this->input->post('table')])){
+					if(isset($config[$this->input->post('table')]))
+                    {
 						// rules already existed , reload rules
 						$form_content = str_replace('{form_validation_data}',$form_validation_data,file_get_contents('templates/form_validation.php'));	
 					}else{
@@ -252,14 +276,17 @@ class Codegen extends CI_Controller {
                                 'view_add'  => array($v_path.$this->input->post('view').'_add.php', $add_content),
                                'form_validation'  => array($file_validation, $form_content) 
                                 );
-                foreach($write_files as $wf){
-                    if($this->writefile($wf[0],$wf[1])){
+                foreach($write_files as $wf)
+                {
+                    if($this->writefile($wf[0],$wf[1]))
+                    {
                         $err++;
                         echo $this->writefile($wf[0],$wf[1]);
                     }
                 }        
                                                     
-               if($err >0){
+               if($err >0)
+               {
                     exit;
                 }else{
                     $data['list_content'] = $list_content;
@@ -276,7 +303,8 @@ class Codegen extends CI_Controller {
             }// if generate
     }
     
-    function fexist($path){
+    function fexist($path)
+    {
              if (file_exists($path))
             {
                 // todo , automatically adds new validation
@@ -287,7 +315,8 @@ class Codegen extends CI_Controller {
             }        
     }
     
-    function writefile($file,$content){
+    function writefile($file,$content)
+    {
         
         if (!write_file($file, $content))
         {

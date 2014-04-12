@@ -9,7 +9,8 @@ echo form_dropdown('table',$db_tables);
 </form>
 <form action="<?php echo current_url();?>" method="post">
 <?php
-if(isset($alias)){
+if(isset($alias))
+{
 ?>
 <input type="hidden" name="table" value="<?php echo $table ?>" />
 <table>
@@ -29,7 +30,7 @@ if(isset($alias)){
     
     $type = array(
                 'exclude'  =>'Do not include',
-                'text' => 'text input',
+                'text'      => 'text input',
                 'password' => 'password',
                 'textarea' => 'textarea' , 
                 'dropdown' => 'dropdown'
@@ -38,29 +39,42 @@ if(isset($alias)){
    
    $sel = '';
     if(isset($alias)){
-        foreach($alias as $a){
-             $email_default = FALSE;
-            echo '<p> Field: '.$a->Field.'<br>Label:'.form_input('field['.$a->Field.']', ucfirst($a->Field)).' '.$a->Type;
+        foreach($alias as $a)
+        {
+       
+            $email_default = FALSE;
+            echo '<p> Field: '.$a->Field.'<br>Label:'.form_input('field['.$a->Field.']', str_replace("_"," ",ucfirst($a->Field))).' '.$a->Type;
             
            
-            if(strpos($a->Type,'enum') !== false){
+            if(strpos($a->Type,'enum') !== false)
+            {
                 echo ' <br>Enum Values (CSV): <input size="50" type="text" value="'.htmlspecialchars ("'0'=>'Value','1'=>'Another Value'").'" name="'.$a->Field.'default">';
                 $sel = 'dropdown';
-            }elseif(strpos($a->Type,'blob') !== false || strpos($a->Type,'text') !== false){
+            }
+            elseif(strpos($a->Type,'blob') !== false || strpos($a->Type,'text') !== false)
+            {
                 $sel = 'textarea';
-            }else if($a->Key == 'PRI'){
+            }
+            else if($a->Key == 'PRI')
+            {
                 $sel = 'exclude';
                 echo form_hidden('primaryKey',$a->Field);
-            }else if(strpos($a->Field,'password') !== false){
+            }
+            // else if(in_array('password',explode("_",$a->Field)))
+            else if(strpos($a->Field,'password') !== false)
+            {
                 $sel = 'password';
-            }else if(strpos($a->Field,'email') !== false){
+            }
+            else if(strpos($a->Field,'email') !== false)
+            {
                 $email_default = TRUE;
-            }else{
+            }
+            else{
                  $sel = 'text';
             }
              echo '<br> Type::'.form_dropdown('type['.$a->Field.'][]', $type,$sel);
             echo '<br>';
-            echo form_checkbox('rules['.$a->Field.'][]', 'required', TRUE) . ' required :: ';
+            echo form_checkbox('rules['.$a->Field.'][]', 'required', ((strtolower($a->Null)=='no') ? TRUE : FALSE) ) . ' required :: ';
             echo form_checkbox('rules['.$a->Field.'][]', 'trim', TRUE) . ' trim :: ';
             echo form_checkbox('rules['.$a->Field.'][]', 'valid_email', $email_default) . ' email :: ';
             echo form_checkbox('rules['.$a->Field.'][]', 'xss_clean', TRUE) . ' xss_clean ::';
