@@ -18,7 +18,9 @@ class  {table}_model extends MY_Model
         parent::__construct();
     }
 
-
+    function count(){
+        return $this->db->count_all($this->_table_name);
+    }
 
     
 }// ------------------End User_M --------------Class{}
