@@ -18,7 +18,7 @@ class {controller_name} extends MY_Controller
         $this->load->library('pagination');
         
         //paging
-        $config['base_url'] = site_url('{controller_name_l}/index/');
+        $config['base_url'] = site_url('{controller_name_l}/index');
         $config['total_rows'] = $this->{model_name_1}->count();
         $config['per_page'] = 3;	
         $this->pagination->initialize($config); 	
