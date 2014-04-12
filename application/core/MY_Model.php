@@ -22,8 +22,12 @@ class MY_Model extends CI_Model
     //
     //@ type :
     //#return type :
-    public function get($id = NULL, $single = FALSE)
+    public function get($fields = NULL, $id = NULL, $single = FALSE, $perpage=0, $start=0, $array='array')
     {
+        if ($fields !==NULL)
+        {
+            $this->db->select($fields);
+        }
     	if($id != NULL)
     	{
     		$filter = $this->_primary_filter;
@@ -45,7 +49,7 @@ class MY_Model extends CI_Model
     	// {
     	// 	$this->db->order_by($this->_order_by);
     	// }
-
+        $this->db->limit($perpage,$start);
     	return $this->db->get($this->_table_name)->$method(); 
     	
     }//Function End get()---------------------------------------------------FUNEND()
@@ -56,7 +60,7 @@ class MY_Model extends CI_Model
     //
     //@ type :
     //#return type :
-    public function get_by($where, $single = FALSE)
+    public function get_by($where='', $fields = NULL, $id = NULL, $single = FALSE, $perpage=0, $start=0, $array='array')
     {
     	$this->db->where($where);
     	return $this->get(NULL, $single);

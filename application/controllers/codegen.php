@@ -91,7 +91,7 @@ class Codegen extends CI_Controller {
                 // looping of labels and forms , for edit and add form
                 foreach($label as $k => $v)
                 {
-                    
+
                     if($type[$k][0] != 'exclude')
                     {
                         $labels[] = $v;
@@ -220,25 +220,52 @@ class Codegen extends CI_Controller {
                 	$form_content = str_replace('{form_validation_data}',$form_validation_data,file_get_contents('templates/form_validation.php'));
 				
             	}
-               ////////////////////
+               //////////////////// path list
                 $c_path = 'application/controllers/';
                 $m_path = 'application/models/'; 
-                $v_path = 'application/views/';                              
+                $v_path = 'application/views/';  
+                     
                 
-                ///////////////// controller
+                ///////////////// create model
+                $model = file_get_contents('templates/model.php');
+                $search = array(
+                                '{table}',
+                                '{model_name_1}',
+                                '{primaryKey}',
+                                '{form_data}',
+                                '{fields_list}',
+                    );
+                $replace = array(
+                                $this->input->post('table'), 
+                                ($this->input->post('table').'_model'), 
+                                $this->input->post('primaryKey'),
+                                $form_data,
+                                $fields,
+                    );
+
+                $m_content = str_replace($search, $replace, $model);
+
+                
+                $file_model = $m_path . $this->input->post('table').'_model'. '.php';
+
+
+                ///////////////// create controller
                 $controller = file_get_contents('templates/controller.php');
                 $search = array('{controller_name}', '{view}', '{table}','{validation_name}',
-                '{data}','{edit_data}','{controller_name_l}','{primaryKey}','{fields_list}');
+                '{data}','{edit_data}','{controller_name_l}','{primaryKey}','{fields_list}'
+                ,'{model_name_1}');
                 $replace = array(
-                            ucfirst($this->input->post('controller')), 
-                            $this->input->post('view'),
-                            $this->input->post('table'),
-                             $this->input->post('validation'),
-                             implode(','."\n\t\t\t\t\t",$controller_form_data),
-                             implode(','."\n\t\t\t\t\t",$controller_form_editdata),
-                             $this->input->post('controller'),
-                             $this->input->post('primaryKey'),
-                             $fields
+                                ucfirst($this->input->post('controller')), 
+                                $this->input->post('view'),
+                                $this->input->post('table'),
+                                 $this->input->post('validation'),
+                                 implode(','."\n\t\t\t\t\t",$controller_form_data),
+                                 implode(','."\n\t\t\t\t\t",$controller_form_editdata),
+                                 $this->input->post('controller'),
+                                 $this->input->post('primaryKey'),
+                                 $fields,
+                                 ($this->input->post('table').'_model'),
+
                             );
 
                 $c_content = str_replace($search, $replace, $controller);
@@ -270,6 +297,7 @@ class Codegen extends CI_Controller {
                 $edit_content = str_replace($edit_search,$edit_replace,$edit_v);
                 
                 $write_files = array(
+                                'Model' => array($file_model, $m_content),
                                 'Controller' => array($file_controller, $c_content),
                                 'view_edit'  => array($v_path.$this->input->post('view').'_edit.php', $edit_content),
                                 'view_list'  => array($v_path.$this->input->post('view').'_list.php', $list_content),

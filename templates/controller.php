@@ -1,16 +1,35 @@
 <?php
 
-class {controller_name} extends CI_Controller {
+class {controller_name} extends MY_Controller
+{
     
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
 		$this->load->library('form_validation');		
 		$this->load->helper(array('form','url','codegen_helper'));
 		$this->load->model('codegen_model','',TRUE);
 	}	
 	
-	function index(){
-		$this->manage();
+	function index()
+	{
+        $this->load->model('{model_name_1}');
+		$this->load->library('table');
+        $this->load->library('pagination');
+        
+        //paging
+        $config['base_url'] = site_url('{controller_name_l}/index/');
+        $config['total_rows'] = $this->codegen_model->count('{table}');
+        $config['per_page'] = 3;	
+        $this->pagination->initialize($config); 	
+        // make sure to put the primarykey first when selecting , 
+		//eg. 'userID,name as Name , lastname as Last_Name' , Name and Last_Name will be use as table header.
+		// Last_Name will be converted into Last Name using humanize() function, under inflector helper of the CI core.
+		$this->data['results'] = $this->{model_name_1}->get('{fields_list}','',$config['per_page']);
+       
+	   $this->load->view('{view}_list', $this->data); 
+       //$this->template->load('content', '{view}_list', $this->data); // if have template library , http://maestric.com/doc/php/codeigniter_template
+
 	}
 
 	function manage(){
