@@ -26,8 +26,12 @@ class {controller_name} extends MY_Controller
         //eg. 'userID,name as Name , lastname as Last_Name' , Name and Last_Name will be use as table header.
         // Last_Name will be converted into Last Name using humanize() function, under inflector helper of the CI core.
         $this->data['results'] = $this->{model_name_1}->get('{fields_list}', NULL, FALSE,$config['per_page'],$this->uri->segment(3));
-       
+        
+        $this->load->view('temp/temp_header');
+        $this->load->view('temp/temp_nav');
+        $this->load->view('temp/temp_body');
         $this->load->view('{view}_list', $this->data); 
+        $this->load->view('temp/temp_footer');
         //$this->template->load('content', '{view}_list', $this->data); // if have template library , http://maestric.com/doc/php/codeigniter_template
 
 	}
