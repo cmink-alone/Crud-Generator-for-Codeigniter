@@ -69,6 +69,14 @@ if(isset($alias))
             {
                 $email_default = TRUE;
             }
+            else if(strpos($a->Field,'created') !== false)
+            {
+                $sel = 'exclude';
+            }
+            else if(strpos($a->Field,'modified') !== false)
+            {
+                $sel = 'exclude';
+            }
             else{
                  $sel = 'text';
             }
