@@ -19,7 +19,7 @@
 					<div class="row-fluid">
 						<div class="span3">
 								<div class="conatainer">
-									<ul>
+									<ul class="nav nav-list bs-docs-sidenav affix">
 										<li><a href="<?php echo site_url('admin') ?> ">Admin</a></li>
 										<li><a href="<?php echo site_url('bookmark_location') ?> ">Bookmark location</a></li>
 										<li><a href="<?php echo site_url('brand') ?> ">Brand</a></li>
@@ -50,12 +50,12 @@
 				</div>
 			</div>
 			<!-- Sidebar -->
-			<!-- <div class="span3">
+			<div class="span3">
 				<section>
 					<?php echo mailto('joost@codeigniter.tv', '<i class="icon-user"></i> joost@codeigniter.tv'); ?><br>
 					<?php echo anchor('admin/user/logout', '<i class="icon-off"></i> logout'); ?>
 				</section>
-			</div> -->
+			</div>
 		</div>
 	</div>
 

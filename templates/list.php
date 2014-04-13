@@ -1,7 +1,7 @@
 <h2>{table}</h2>
 
 <?php
-echo anchor(site_url("{controller_name_l}/add/"),'Add {table}');
+echo anchor(site_url("{controller_name_l}/add/"),'Add a {table}','class="btn btn-primary"');
 if(!$results){
 	echo '<h1>{table} No Data</h1>';
 	exit;

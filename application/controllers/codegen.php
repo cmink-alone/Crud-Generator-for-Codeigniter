@@ -87,7 +87,6 @@ class Codegen extends CI_Controller {
                 $label = $this->input->post('field');
                 $type = $this->input->post('type');
                 
-                
                 // looping of labels and forms , for edit and add form
                 foreach($label as $k => $v)
                 {
@@ -119,12 +118,7 @@ class Codegen extends CI_Controller {
                                         <textarea id="'.$k.'" name="'.$k.'"><?php echo $result->'.$k.' ?></textarea>
                                         <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
                                         </p>
-                                        ';                                    
-                             $ind_view_list[] = '
-                                        <p><label>'.$v.'</label>                                
-                                        <label><?php echo $result->'.$k.' ?></label>
-                                        </p>
-                                        ';                                    
+                                        ';
                                     
                         }
                         else if($this->input->post($k.'default'))
@@ -146,12 +140,7 @@ class Codegen extends CI_Controller {
                                         echo form_dropdown(\''.$k.'\', $enum,$result->'.$k.'); ?>
                                         <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
                                         </p>
-                                        ';                                    
-                            $ind_view_list[] = '
-                                        <p><label>'.$v.'</label>                                
-                                        <label><?php echo $result->'.$k.' ?></label>
-                                        </p>
-                                        ';                                       
+                                        ';
                         }
                         else
                         {
@@ -168,14 +157,15 @@ class Codegen extends CI_Controller {
                                         <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
                                         </p>
                                         ';
-                            $ind_view_list[] = '
-                                        <p><label>'.$v.'</label>                                
-                                        <label><?php echo $result->'.$k.' ?></label>
-                                        </p>
-                                        ';
-                        }
+                        }                           
+                         $ind_view_list[] = '
+                                            <tr>
+                                                <td><label>'.$v.'</label></td>
+                                                <td><label><?php echo $result->'.$k.' ?></label></td>
+                                            </tr>';    
                     }
-                }
+                    
+                }// end foreach()
               
                 // this will ensure that the primary key will be selected first.
                 $fields_list[] = $this->input->post('primaryKey');
@@ -322,7 +312,7 @@ class Codegen extends CI_Controller {
                 //VIEW/ indivieial 
                 $ind_view_v = file_get_contents('templates/view.php');
                 $ind_view_search = array(
-                                        '{forms_inputs}',
+                                        '{ind_view_list}',
                                         '{primary}',
                                         '{table}',
                                         '{controller_name_l}',

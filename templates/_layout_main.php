@@ -19,7 +19,7 @@
 					<div class="row-fluid">
 						<div class="span3">
 								<div class="conatainer">
-									<ul>
+									<ul class="nav nav-list bs-docs-sidenav affix">
 										{db_table_list}
 									</ul>
 								</div>
@@ -31,12 +31,12 @@
 				</div>
 			</div>
 			<!-- Sidebar -->
-			<!-- <div class="span3">
+			<div class="span3">
 				<section>
 					<?php echo mailto('joost@codeigniter.tv', '<i class="icon-user"></i> joost@codeigniter.tv'); ?><br>
 					<?php echo anchor('admin/user/logout', '<i class="icon-off"></i> logout'); ?>
 				</section>
-			</div> -->
+			</div>
 		</div>
 	</div>
 
