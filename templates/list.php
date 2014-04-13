@@ -1,9 +1,9 @@
 <h2>{table}</h2>
 
 <?php
-echo anchor(base_url().'index.php/{controller_name_l}/add/','Add');
+echo anchor(base_url().'index.php/{controller_name_l}/add/','Add {table}');
 if(!$results){
-	echo '<h1>No Data</h1>';
+	echo '<h1>{table} No Data</h1>';
 	exit;
 }
 

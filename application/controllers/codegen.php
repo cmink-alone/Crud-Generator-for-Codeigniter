@@ -211,12 +211,16 @@ class Codegen extends CI_Controller {
                     {
 						// rules already existed , reload rules
 						$form_content = str_replace('{form_validation_data}',$form_validation_data,file_get_contents('templates/form_validation.php'));	
-					}else{
+					}
+                    else
+                    {
 						// append new rule
 						$form_content = str_replace('{form_validation_data}',$old_form.$form_validation_data,file_get_contents('templates/form_validation.php'));	
 					}
 				
-				}else{	
+				}
+                else
+                {	
                 	$form_content = str_replace('{form_validation_data}',$form_validation_data,file_get_contents('templates/form_validation.php'));
 				
             	}
@@ -281,7 +285,7 @@ class Codegen extends CI_Controller {
                 $list_v = file_get_contents('templates/list.php');
                 $search = array('{table}');
                 $replace = array(
-                                    $this->input->post('table')
+                                    ucfirst($this->input->post('table'))
                                 );
 
                 $list_v = str_replace($search, $replace, $list_v);                
@@ -295,7 +299,7 @@ class Codegen extends CI_Controller {
                 $add_v = file_get_contents('templates/add.php');
                 $search = array('{table}');
                 $replace = array(
-                                    $this->input->post('table')
+                                    ucfirst($this->input->post('table'))
                                 );
 
                 $add_v = str_replace($search, $replace, $add_v);
@@ -314,7 +318,7 @@ class Codegen extends CI_Controller {
                 $edit_replace = array(
                                         implode("\n",$edit_form),
                                         '<?php echo form_hidden(\''.$this->input->post('primaryKey').'\',$result->'.$this->input->post('primaryKey').') ?>',
-                                        $this->input->post('table')
+                                        ucfirst($this->input->post('table'))
                                     );
                 
                 $edit_content = str_replace($edit_search,$edit_replace,$edit_v);
@@ -336,10 +340,12 @@ class Codegen extends CI_Controller {
                     }
                 }        
                                                     
-               if($err >0)
-               {
+                if($err >0)
+                {
                     exit;
-                }else{
+                }
+                else
+                {
                     $data['list_content'] = $list_content;
                     
                     $data['add_content'] = $add_content;
@@ -361,7 +367,8 @@ class Codegen extends CI_Controller {
                 // todo , automatically adds new validation
                 return $path.' - File exists <br>';                    
             }
-            else{
+            else
+            {
                 return false;
             }        
     }
@@ -372,7 +379,8 @@ class Codegen extends CI_Controller {
         if (!write_file($file, $content))
         {
             return $file. ' - Unable to write the file';
-        } else
+        }
+        else
         {
             return false;
         }
