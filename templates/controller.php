@@ -20,7 +20,7 @@ class {controller_name} extends MY_Controller
         //paging
         $config['base_url'] = site_url('{controller_name_l}/index');
         $config['total_rows'] = $this->{model_name_1}->count();
-        $config['per_page'] = 3;	
+        $config['per_page'] = 10;	
         $this->pagination->initialize($config); 	
         // make sure to put the primarykey first when selecting , 
         //eg. 'userID,name as Name , lastname as Last_Name' , Name and Last_Name will be use as table header.
@@ -28,7 +28,7 @@ class {controller_name} extends MY_Controller
         $this->data['results'] = $this->{model_name_1}->get('{fields_list}', NULL, FALSE,$config['per_page'],$this->uri->segment(3));
         
         $this->load->view('temp/_layout_main',array('subview'=>'{view}_list','dataprovider'=>$this->data));
-        
+
         // $this->load->view('temp/components/page_head');
         // $this->load->view('temp/admin/temp_nav');
         // // $this->load->view('temp/temp_body');
@@ -133,6 +133,15 @@ class {controller_name} extends MY_Controller
         // $this->load->view('temp/components/page_tail');
         //$this->template->load('content', '{view}_edit', $this->data);
     }
+
+
+    function view()
+    {
+        $ID =  $this->uri->segment(3);
+        $this->data['result'] = $this->{model_name_1}->get('{fields_list}', $this->uri->segment(3),TRUE,NULL,TRUE);
+        $this->load->view('temp/_layout_modal',array('subview'=>'{view}_view','dataprovider'=>$this->data));
+    }
+
 	
     function delete()
     {

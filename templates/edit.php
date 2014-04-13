@@ -3,7 +3,7 @@
 </div>
 <div class="modal-body">
 
-	<h2><!-- {table} --></h2>
+	<!-- <h2>{table}</h2> -->
 
 	<?php echo form_open(current_url()); ?>
 

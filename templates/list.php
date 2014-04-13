@@ -11,6 +11,7 @@ if(!$results){
 
 for($i=0;$i<count($results);$i++){
             $id = array_values($results[$i]);
+            $results[$i]['View']     = anchor(site_url('{controller_name_l}/view/'.$id[0]),'View');
             $results[$i]['Edit']     = anchor(site_url('{controller_name_l}/edit/'.$id[0]),'Edit');
             $results[$i]['Delete']   = anchor(site_url('{controller_name_l}/delete/'.$id[0]),'Delete',array('onClick'=>'return deletechecked(\' '.site_url('{controller_name_l}/delete/'.$id[0]).' \')'));
                                         // anchor(site_url('{controller_name_l}/delete/'.$id[0]),'Delete',array('onClick'=>'return deletechecked(\' '.base_url().'index.php/{controller_name_l}/delete/'.$id[0].' \')'));

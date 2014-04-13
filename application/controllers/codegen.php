@@ -120,6 +120,11 @@ class Codegen extends CI_Controller {
                                         <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
                                         </p>
                                         ';                                    
+                             $ind_view_list[] = '
+                                        <p><label>'.$v.'</label>                                
+                                        <label><?php echo $result->'.$k.' ?></label>
+                                        </p>
+                                        ';                                    
                                     
                         }
                         else if($this->input->post($k.'default'))
@@ -142,6 +147,11 @@ class Codegen extends CI_Controller {
                                         <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
                                         </p>
                                         ';                                    
+                            $ind_view_list[] = '
+                                        <p><label>'.$v.'</label>                                
+                                        <label><?php echo $result->'.$k.' ?></label>
+                                        </p>
+                                        ';                                       
                         }
                         else
                         {
@@ -156,6 +166,11 @@ class Codegen extends CI_Controller {
                                         <p><label for="'.$k.'">'.$v.$required.'</label>                                
                                         <input id="'.$k.'" type="'.$type[$k][0].'" name="'.$k.'" value="<?php echo $result->'.$k.' ?>"  />
                                         <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
+                                        </p>
+                                        ';
+                            $ind_view_list[] = '
+                                        <p><label>'.$v.'</label>                                
+                                        <label><?php echo $result->'.$k.' ?></label>
                                         </p>
                                         ';
                         }
@@ -294,8 +309,28 @@ class Codegen extends CI_Controller {
                 
  
                 
+                //VIEW/ indivieial 
+                $ind_view_v = file_get_contents('templates/view.php');
+                $ind_view_search = array(
+                                        '{forms_inputs}',
+                                        '{primary}',
+                                        '{table}',
+                                        '{controller_name_l}',
+                                        '{primaryKey_id}',
+                                    );
+                $ind_view_replace = array(
+                                        implode("\n",$ind_view_list),
+                                        '<?php echo form_hidden(\''.$this->input->post('primaryKey').'\',$result->'.$this->input->post('primaryKey').') ?>',
+                                        ucfirst($this->input->post('table')),
+                                        $this->input->post('controller'),
+                                        $this->input->post('primaryKey')
+                                    );
+                
+                $ind_view_content = str_replace($ind_view_search,$ind_view_replace,$ind_view_v);
+                
+ 
+                
                 //ADD FORM
-                //VIEW/LIST 
                 $add_v = file_get_contents('templates/add.php');
                 $search = array('{table}');
                 $replace = array(
@@ -314,11 +349,13 @@ class Codegen extends CI_Controller {
                                         '{forms_inputs}',
                                         '{primary}',
                                         '{table}',
+                                       
                                     );
                 $edit_replace = array(
                                         implode("\n",$edit_form),
                                         '<?php echo form_hidden(\''.$this->input->post('primaryKey').'\',$result->'.$this->input->post('primaryKey').') ?>',
-                                        ucfirst($this->input->post('table'))
+                                        ucfirst($this->input->post('table')),
+                                        
                                     );
                 
                 $edit_content = str_replace($edit_search,$edit_replace,$edit_v);
@@ -329,6 +366,7 @@ class Codegen extends CI_Controller {
                                 'view_edit'  => array($v_path.$this->input->post('view').'_edit.php', $edit_content),
                                 'view_list'  => array($v_path.$this->input->post('view').'_list.php', $list_content),
                                 'view_add'   => array($v_path.$this->input->post('view').'_add.php', $add_content),
+                                'view_ind'   => array($v_path.$this->input->post('view').'_view.php', $ind_view_content),
                                //'form_validation'  => array($file_validation, $form_content) 
                                 );
                 foreach($write_files as $wf)
