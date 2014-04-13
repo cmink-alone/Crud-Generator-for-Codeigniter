@@ -65,7 +65,8 @@ class {controller_name} extends MY_Controller
         {
              $this->data['custom_error'] = (validation_errors() ? '<div class="form_error">'.validation_errors().'</div>' : false);
 
-        } else
+        }
+        else
         {                            
             $data = array(
                     {data}
@@ -82,8 +83,12 @@ class {controller_name} extends MY_Controller
 				$this->data['custom_error'] = '<div class="form_error"><p>An Error Occured.</p></div>';
 
 			}
-		}		   
-		$this->load->view('{view}_add', $this->data);   
+		}
+        $this->load->view('temp/temp_header');
+        $this->load->view('temp/temp_nav');
+        $this->load->view('temp/temp_body');
+        $this->load->view('{view}_add', $this->data);   
+        $this->load->view('temp/temp_footer');  
         //$this->template->load('content', '{view}_add', $this->data);
     }	
     
@@ -96,7 +101,8 @@ class {controller_name} extends MY_Controller
         {
              $this->data['custom_error'] = (validation_errors() ? '<div class="form_error">'.validation_errors().'</div>' : false);
 
-        } else
+        }
+        else
         {                            
             $data = array(
                     {edit_data}
@@ -114,8 +120,12 @@ class {controller_name} extends MY_Controller
 		}
 
 		$this->data['result'] = $this->{model_name_1}->get('{fields_list}', $this->uri->segment(3),TRUE,NULL,TRUE);
-		
-		$this->load->view('{view}_edit', $this->data);		
+        
+        $this->load->view('temp/temp_header');
+        $this->load->view('temp/temp_nav');
+        $this->load->view('temp/temp_body');
+        $this->load->view('{view}_edit', $this->data);      
+        $this->load->view('temp/temp_footer');
         //$this->template->load('content', '{view}_edit', $this->data);
     }
 	
