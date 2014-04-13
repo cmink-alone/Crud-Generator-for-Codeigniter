@@ -243,8 +243,18 @@ class Codegen extends CI_Controller {
                 $c_path = 'application/controllers/';
                 $m_path = 'application/models/'; 
                 $v_path = 'application/views/';  
-                     
-                
+
+                // $li_table_list = array();
+                // table list
+                $db_tables_list = $this->db->list_tables();
+                foreach ($db_tables_list as $key => $table)
+                {
+                    $li_table_list[$table] = '<li><a href="<?php echo site_url('."'".$table."'".') ?> ">'.str_replace('_', ' ', ucfirst($table)).'</a></li>';
+                }
+                //  remove config table
+                unset($li_table_list['sf_config']);
+
+
                 ///////////////// create model
                 $model = file_get_contents('templates/model.php');
                 $search = array(
@@ -359,6 +369,17 @@ class Codegen extends CI_Controller {
                                     );
                 
                 $edit_content = str_replace($edit_search,$edit_replace,$edit_v);
+
+                 //tb_table_list in _main_layout
+                $_layout_main_file = file_get_contents('templates/_layout_main.php');
+                $_layout_main_search = array(
+                                       '{db_table_list}',
+                                    );
+                $_layout_main_replace = array(
+                                        implode("\n\t\t\t\t\t\t\t\t\t\t",$li_table_list),
+                                    );
+                
+                $_layout_main_content = str_replace($_layout_main_search,$_layout_main_replace,$_layout_main_file);
                 
                 $write_files = array(
                                 'Model' => array($file_model, $m_content),
@@ -367,6 +388,7 @@ class Codegen extends CI_Controller {
                                 'view_list'  => array($v_path.$this->input->post('view').'_list.php', $list_content),
                                 'view_add'   => array($v_path.$this->input->post('view').'_add.php', $add_content),
                                 'view_ind'   => array($v_path.$this->input->post('view').'_view.php', $ind_view_content),
+                                'ind_view_content'   => array($v_path.'temp/_layout_main.php', $_layout_main_content),
                                //'form_validation'  => array($file_validation, $form_content) 
                                 );
                 foreach($write_files as $wf)

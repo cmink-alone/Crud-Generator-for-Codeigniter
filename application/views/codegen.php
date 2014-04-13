@@ -30,7 +30,7 @@ if(isset($alias))
     
     $type = array(
                 'exclude'  =>'Do not include',
-                'text'      => 'text input',
+                'text'     => 'text input',
                 'password' => 'password',
                 'textarea' => 'textarea' , 
                 'dropdown' => 'dropdown'
