@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<h3>Add a {table}</h3>
+	<h3>Add a {C_table_name}</h3>
 </div>
 <div class="modal-body">
 	

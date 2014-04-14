@@ -249,6 +249,7 @@ class Codegen extends CI_Controller {
                 $model = file_get_contents('templates/model.php');
                 $search = array(
                                 '{table}',
+                                '{C_table_name}',
                                 '{model_name_1}',
                                 '{primaryKey}',
                                 '{form_data}',
@@ -256,11 +257,13 @@ class Codegen extends CI_Controller {
                     );
                 $replace = array(
                                 $this->input->post('table'), 
+                                    str_replace('_', ' ', ucfirst($this->input->post('table'))),
                                 ($this->input->post('table').'_model'), 
                                 $this->input->post('primaryKey'),
                                 $form_data,
                                 $fields,
                     );
+
 
                 $m_content = str_replace($search, $replace, $model);
 
@@ -298,9 +301,13 @@ class Codegen extends CI_Controller {
                 
                 //VIEW/LIST 
                 $list_v = file_get_contents('templates/list.php');
-                $search = array('{table}');
+                $search = array(
+                                    '{table}',
+                                    '{C_table_name}',
+                                );
                 $replace = array(
-                                    ucfirst($this->input->post('table'))
+                                    $this->input->post('table'),
+                                    str_replace('_', ' ', ucfirst($this->input->post('table'))),
                                 );
 
                 $list_v = str_replace($search, $replace, $list_v);                
@@ -315,13 +322,15 @@ class Codegen extends CI_Controller {
                                         '{ind_view_list}',
                                         '{primary}',
                                         '{table}',
+                                        '{C_table_name}',
                                         '{controller_name_l}',
                                         '{primaryKey_id}',
                                     );
                 $ind_view_replace = array(
                                         implode("\n",$ind_view_list),
                                         '<?php echo form_hidden(\''.$this->input->post('primaryKey').'\',$result->'.$this->input->post('primaryKey').') ?>',
-                                        ucfirst($this->input->post('table')),
+                                        $this->input->post('table'),
+                                        str_replace('_', ' ', ucfirst($this->input->post('table'))),
                                         $this->input->post('controller'),
                                         $this->input->post('primaryKey')
                                     );
@@ -332,9 +341,13 @@ class Codegen extends CI_Controller {
                 
                 //ADD FORM
                 $add_v = file_get_contents('templates/add.php');
-                $search = array('{table}');
+                $search = array(
+                                    '{table}',
+                                    '{C_table_name}',
+                                );
                 $replace = array(
-                                    ucfirst($this->input->post('table'))
+                                    ucfirst($this->input->post('table')),
+                                    str_replace('_', ' ', ucfirst($this->input->post('table'))),
                                 );
 
                 $add_v = str_replace($search, $replace, $add_v);
@@ -349,15 +362,17 @@ class Codegen extends CI_Controller {
                                         '{forms_inputs}',
                                         '{primary}',
                                         '{table}',
+                                        '{C_table_name}',
                                        
                                     );
                 $edit_replace = array(
                                         implode("\n",$edit_form),
                                         '<?php echo form_hidden(\''.$this->input->post('primaryKey').'\',$result->'.$this->input->post('primaryKey').') ?>',
                                         ucfirst($this->input->post('table')),
+                                        str_replace('_', ' ', ucfirst($this->input->post('table'))),
                                         
                                     );
-                
+
                 $edit_content = str_replace($edit_search,$edit_replace,$edit_v);
 
                  //tb_table_list in _main_layout
