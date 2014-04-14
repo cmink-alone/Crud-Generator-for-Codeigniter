@@ -11,7 +11,15 @@
 
 		{primary}
 		{forms_inputs}
-	<p>  <?php echo form_submit( 'submit', 'Submit'); ?> </p>
 
+	<div class="modal-footer">
+		<div class="clearfix">
+			<div class="pull-left">
+				<?php echo form_submit( 'submit', 'Save','class="btn btn-primary"'); ?>
+				<?php echo anchor((site_url('{controller_name_l}')) , '{C_controller_name_l} list', array('class'=>'btn btn-default')); ?>
+			</div>
+			<div class="span4 pull-right"><?php echo anchor(site_url(), ' &copy; '. date('Y').' '.$site_name); ?></div>
+		</div>
+	</div>
 	<?php echo form_close(); ?>
 </div>

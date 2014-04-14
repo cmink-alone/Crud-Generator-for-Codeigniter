@@ -1,9 +1,9 @@
 <h2>{C_table_name}</h2>
 
 <?php
-echo anchor(site_url("{controller_name_l}/add/"),'Add a {table}','class="btn btn-primary"');
+echo anchor(site_url("{controller_name_l}/add/"),'Add a {C_table_name}','class="btn btn-primary"');
 if(!$results){
-	echo '<h1>{table} No Data</h1>';
+	echo '<h1>{C_table_name} No Data</h1>';
 	exit;
 }
 

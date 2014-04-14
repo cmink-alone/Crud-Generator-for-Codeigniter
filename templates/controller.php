@@ -26,7 +26,7 @@ class {controller_name} extends MY_Controller
         //eg. 'userID,name as Name , lastname as Last_Name' , Name and Last_Name will be use as table header.
         // Last_Name will be converted into Last Name using humanize() function, under inflector helper of the CI core.
         $this->data['results'] = $this->{model_name_1}->get('{fields_list}', NULL, FALSE,$config['per_page'],$this->uri->segment(3));
-        
+        $this->data['meta_title'] = $this->data['meta_title'].' - {C_controller_name_l} list';
         $this->load->view('temp/_layout_main',array('subview'=>'{view}_list','dataprovider'=>$this->data));
 
         // $this->load->view('temp/components/page_head');
@@ -86,6 +86,8 @@ class {controller_name} extends MY_Controller
 
 			}
         }
+        $this->data['meta_title'] = $this->data['meta_title'].' - Add a {C_controller_name_l} ';
+
         $this->load->view('temp/_layout_modal',array('subview'=>'{view}_add','dataprovider'=>$this->data));
         // $this->load->view('temp/components/page_head');
         // $this->load->view('temp/admin/temp_nav');
@@ -123,7 +125,7 @@ class {controller_name} extends MY_Controller
         }
 
         $this->data['result'] = $this->{model_name_1}->get('{fields_list}', $this->uri->segment(3),TRUE,NULL,TRUE);
-        
+            $this->data['meta_title'] = $this->data['meta_title'].' - Edit {C_controller_name_l}';
         $this->load->view('temp/_layout_modal',array('subview'=>'{view}_edit','dataprovider'=>$this->data));
 
         // $this->load->view('temp/components/page_head');

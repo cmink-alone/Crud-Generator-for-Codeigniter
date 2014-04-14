@@ -3,11 +3,15 @@
 class MY_Controller extends CI_Controller
 {
 
+	public $meta_title;
+	public $data =array();
+	// public $data = array();
 	public function __construct()
 	{
 		parent::__construct();
 		//Do your magic here
-		$this->data = array();
+		$this->data['meta_title'] = $this->config->item('site_name');
+		$this->data['site_name'] = $this->config->item('site_name');
 	}
 
 

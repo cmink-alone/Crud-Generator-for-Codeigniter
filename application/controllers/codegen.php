@@ -257,7 +257,7 @@ class Codegen extends CI_Controller {
                     );
                 $replace = array(
                                 $this->input->post('table'), 
-                                    str_replace('_', ' ', ucfirst($this->input->post('table'))),
+                                str_replace('_', ' ', ucfirst($this->input->post('table'))),
                                 ($this->input->post('table').'_model'), 
                                 $this->input->post('primaryKey'),
                                 $form_data,
@@ -275,7 +275,7 @@ class Codegen extends CI_Controller {
                 $controller = file_get_contents('templates/controller.php');
                 $search = array('{controller_name}', '{view}', '{table}','{validation_name}',
                 '{data}','{edit_data}','{controller_name_l}','{primaryKey}','{fields_list}'
-                ,'{model_name_1}');
+                ,'{model_name_1}', '{C_controller_name_l}',);
                 $replace = array(
                                 ucfirst($this->input->post('controller')), 
                                 $this->input->post('view'),
@@ -287,6 +287,7 @@ class Codegen extends CI_Controller {
                                  $this->input->post('primaryKey'),
                                  $fields,
                                  ($this->input->post('table').'_model'),
+                                 str_replace('_', ' ', ucfirst($this->input->post('controller'))),
 
                             );
 
@@ -324,6 +325,7 @@ class Codegen extends CI_Controller {
                                         '{table}',
                                         '{C_table_name}',
                                         '{controller_name_l}',
+                                        '{C_controller_name_l}',
                                         '{primaryKey_id}',
                                     );
                 $ind_view_replace = array(
@@ -332,6 +334,7 @@ class Codegen extends CI_Controller {
                                         $this->input->post('table'),
                                         str_replace('_', ' ', ucfirst($this->input->post('table'))),
                                         $this->input->post('controller'),
+                                        str_replace('_', ' ', ucfirst($this->input->post('controller'))),
                                         $this->input->post('primaryKey')
                                     );
                 
@@ -344,10 +347,12 @@ class Codegen extends CI_Controller {
                 $search = array(
                                     '{table}',
                                     '{C_table_name}',
+                                    '{C_controller_name_l}',
                                 );
                 $replace = array(
                                     ucfirst($this->input->post('table')),
                                     str_replace('_', ' ', ucfirst($this->input->post('table'))),
+                                    str_replace('_', ' ', ucfirst($this->input->post('controller'))),
                                 );
 
                 $add_v = str_replace($search, $replace, $add_v);
@@ -363,6 +368,7 @@ class Codegen extends CI_Controller {
                                         '{primary}',
                                         '{table}',
                                         '{C_table_name}',
+                                        '{C_controller_name_l}',
                                        
                                     );
                 $edit_replace = array(
@@ -370,7 +376,8 @@ class Codegen extends CI_Controller {
                                         '<?php echo form_hidden(\''.$this->input->post('primaryKey').'\',$result->'.$this->input->post('primaryKey').') ?>',
                                         ucfirst($this->input->post('table')),
                                         str_replace('_', ' ', ucfirst($this->input->post('table'))),
-                                        
+                                        str_replace('_', ' ', ucfirst($this->input->post('controller'))),
+
                                     );
 
                 $edit_content = str_replace($edit_search,$edit_replace,$edit_v);
