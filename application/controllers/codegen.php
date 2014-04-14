@@ -369,6 +369,7 @@ class Codegen extends CI_Controller {
                                         '{table}',
                                         '{C_table_name}',
                                         '{C_controller_name_l}',
+                                        '{controller_name_l}',
                                        
                                     );
                 $edit_replace = array(
@@ -377,7 +378,7 @@ class Codegen extends CI_Controller {
                                         ucfirst($this->input->post('table')),
                                         str_replace('_', ' ', ucfirst($this->input->post('table'))),
                                         str_replace('_', ' ', ucfirst($this->input->post('controller'))),
-
+                                        $this->input->post('controller')
                                     );
 
                 $edit_content = str_replace($edit_search,$edit_replace,$edit_v);
@@ -386,9 +387,11 @@ class Codegen extends CI_Controller {
                 $_layout_main_file = file_get_contents('templates/_layout_main.php');
                 $_layout_main_search = array(
                                        '{db_table_list}',
+                                       '{controller_name_l}',
                                     );
                 $_layout_main_replace = array(
                                         implode("\n\t\t\t\t\t\t\t\t\t\t",$li_table_list),
+                                        $this->input->post('controller'),
                                     );
                 
                 $_layout_main_content = str_replace($_layout_main_search,$_layout_main_replace,$_layout_main_file);
