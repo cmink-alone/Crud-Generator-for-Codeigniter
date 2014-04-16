@@ -37,6 +37,15 @@ class Codegen extends CI_Controller {
                 $data['table'] = $table[$this->input->post('table')];
                 $result = $this->db->query("SHOW FIELDS from " . $data['table']);
                 $data['alias'] = $result->result();
+                $result = $this->db->query("select COLUMN_NAME,DATA_TYPE, CHARACTER_MAXIMUM_LENGTH 
+                    from information_schema.columns
+                    where table_schema = '".$this->db->database."' AND
+                          table_name = '". $data['table']."' 
+                    ");
+
+                $data['alias_2'] = $result->result();
+                // print_r($data['alias_2'][0]);
+                // exit();
                 
 
                 
@@ -86,6 +95,9 @@ class Codegen extends CI_Controller {
                 $rules = $this->input->post('rules');
                 $label = $this->input->post('field');
                 $type = $this->input->post('type');
+                $length_min = $this->input->post('min');
+                $length_max = $this->input->post('max');
+                $data_type = $this->input->post('DATA_TYPE');
                 
                 // looping of labels and forms , for edit and add form
                 foreach($label as $k => $v)
@@ -93,29 +105,69 @@ class Codegen extends CI_Controller {
 
                     if($type[$k][0] != 'exclude')
                     {
+                        // var_dump($type[$k][0]);
+                        // var_dump($data_type);
+                        // exit();
+                        // echo "<br>";
+                        // var_dump($rules[$k]);
+                        // echo "<br>";
+                        // var_dump($type[$k]);
+                        // echo "<br>";
+                        // exit();
+                        $max_length ='';
+                        $data_type ='';
                         $labels[] = $v;
                         $form_fields[] = $k;
                         if($rules[$k][0] != 'required')
                         {
                             $required = '';
+
+                        }
+                        if($rules[$k][0] != 'required')
+                        {
+                            $required = '';
+
                         }
                         else
                         {
                             $required = '<span class="required">*</span>';        
+                            $field_required = 'required="required"';
                         }
+                         
+                        if (isset($length_max[$k])) {
+                            $max_length = 'max="'.$length_max[$k].'"';
+                        }
+                        // if ((trim($data_type))=='int')
+                        // {
+                        //     $data_type = 'int';
+                        // }
+                        // elseif ((trim($data_type))=='varchar')
+                        // {
+                        //     $data_type = 'varchar';
+                        // }
+                        // elseif ((trim($data_type))=='datetime')
+                        // {
+                        //     $data_type = 'date';
+                        // }
+                        // elseif ((trim($data_type))=='email')
+                        // {
+                        //     $type[$k][0]= 'email';
+                        // }
+                        
+                        
                         // this will create a form for Add and Edit , quite dirty for now
                         if($type[$k][0] == 'textarea')
                         {
                              $add_form[] = '
                                         <p><label for="'.$k.'">'.$v.$required.'</label>                                
-                                        <textarea id="'.$k.'" name="'.$k.'"><?php echo set_value(\''.$k.'\'); ?></textarea>
+                                        <textarea id="'.$k.'" name="'.$k.'" '.$field_required.'><?php echo set_value(\''.$k.'\'); ?></textarea>
                                         <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
                                         </p>
                                         ';
                                         
                              $edit_form[] = '
                                         <p><label for="'.$k.'">'.$v.$required.'</label>                                
-                                        <textarea id="'.$k.'" name="'.$k.'"><?php echo $result->'.$k.' ?></textarea>
+                                        <textarea id="'.$k.'" name="'.$k.'" '.$field_required.'><?php echo $result->'.$k.' ?></textarea>
                                         <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
                                         </p>
                                         ';
@@ -147,13 +199,13 @@ class Codegen extends CI_Controller {
                             //input
                             $add_form[] = '
                                         <p><label for="'.$k.'">'.$v.$required.'</label>                                
-                                        <input id="'.$k.'" type="'.$type[$k][0].'" name="'.$k.'" value="<?php echo set_value(\''.$k.'\'); ?>"  />
+                                        <input id="'.$k.'" type="'.$type[$k][0].'" name="'.$k.'" value="<?php echo set_value(\''.$k.'\'); ?>" '.$field_required.' '.$max_length.' />
                                         <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
                                         </p>
                                         ';
                             $edit_form[] = '
                                         <p><label for="'.$k.'">'.$v.$required.'</label>                                
-                                        <input id="'.$k.'" type="'.$type[$k][0].'" name="'.$k.'" value="<?php echo $result->'.$k.' ?>"  />
+                                        <input id="'.$k.'" type="'.$type[$k][0].'" name="'.$k.'" value="<?php echo $result->'.$k.' ?>" '.$field_required.' '.$max_length.' />
                                         <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
                                         </p>
                                         ';

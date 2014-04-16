@@ -27,21 +27,28 @@ if(isset($alias))
     <h3>Table Data</h3>
     <?php
     //p($alias);
+    // var_dump($alias);
+    // echo '<br>';
+    // var_dump($alias_2);
+    // exit();
     
     $type = array(
                 'exclude'  =>'Do not include',
                 'text'     => 'text input',
+                'date'     => 'date input',
+                'email'    => 'email input',
                 'password' => 'password',
                 'textarea' => 'textarea' , 
                 'dropdown' => 'dropdown'
                 );
-    
-   
+ 
    $sel = '';
     if(isset($alias)){
-        foreach($alias as $a)
+
+        foreach($alias as $key => $a)
         {
-       
+            // var_dump($a);
+            // exit();
             $email_default = FALSE;
             echo '<p> Field: '.$a->Field.'<br>Label:'.form_input('field['.$a->Field.']', str_replace("_"," ",ucfirst($a->Field))).' '.$a->Type;
             
@@ -68,19 +75,49 @@ if(isset($alias))
             else if(strpos($a->Field,'email') !== false)
             {
                 $email_default = TRUE;
+                $alias_2[$key]->DATA_TYPE = 'email';
+                $sel = 'email';
             }
             else if(strpos($a->Field,'created') !== false)
             {
                 $sel = 'exclude';
+                $alias_2[$key]->DATA_TYPE = 'date';
             }
             else if(strpos($a->Field,'modified') !== false)
             {
                 $sel = 'exclude';
+                $alias_2[$key]->DATA_TYPE = 'date';
             }
             else{
                  $sel = 'text';
             }
+            // echo $alias_2[$key]->COLUMN_NAME. " : ".$alias_2[$key]->DATA_TYPE. '<br>';
+
+            // if((trim($alias_2[$key]->DATA_TYPE))=='int')
+            // {
+            //     $input_type='int';
+            // }
+            // elseif((trim($alias_2[$key]->DATA_TYPE))=='varchar')
+            // {
+            //     $input_type='varchar';
+            // }
+            // elseif((trim($alias_2[$key]->DATA_TYPE))=='datetime')
+            // {
+            //     $input_type='datetime';
+            // }
+
+
+
+            // var_dump($alias_2[0]);
+            // exit();
              echo '<br> Type::'.form_dropdown('type['.$a->Field.'][]', $type,$sel);
+            echo '<br>';
+            // if (!empty($input_type))
+            // {
+                // echo ' DATA_TYPE:'.form_input('DATA_TYPE['.$a->Field.']',$alias_2[$key]->DATA_TYPE);
+            // }
+            echo ' min:'.form_input('min['.$a->Field.']');
+            echo ' max :'.form_input('max['.$a->Field.']',(empty($alias_2[$key]->CHARACTER_MAXIMUM_LENGTH)&&($alias_2[$key]->DATA_TYPE=='int'))? 11 : $alias_2[$key]->CHARACTER_MAXIMUM_LENGTH);
             echo '<br>';
             echo form_checkbox('rules['.$a->Field.'][]', 'required', ((strtolower($a->Null)=='no') ? TRUE : FALSE) ) . ' required :: ';
             echo form_checkbox('rules['.$a->Field.'][]', 'trim', TRUE) . ' trim :: ';
@@ -95,8 +132,6 @@ if(isset($alias))
     </td>
 </tr>
 </table>
-
+<?php } ?>
 </form>
-<?php
-}
-?>
+ 
