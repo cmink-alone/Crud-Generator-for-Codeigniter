@@ -1,17 +1,18 @@
 <div class="modal-header">
 	<h3>Edit {C_table_name}</h3>
 </div>
-<div class="modal-body">
+<?php echo form_open(current_url()); ?>
+	<div class="modal-body">
 
 	<!-- <h2>{table}</h2> -->
 
-	<?php echo form_open(current_url()); ?>
 
 	<?php echo $custom_error; ?>
 
 		{primary}
 		{forms_inputs}
 
+	</div>
 	<div class="modal-footer">
 		<div class="clearfix">
 			<div class="pull-left">
@@ -21,5 +22,4 @@
 			<div class="span4 pull-right"><?php echo anchor(site_url(), ' &copy; '. date('Y').' '.$site_name); ?></div>
 		</div>
 	</div>
-	<?php echo form_close(); ?>
-</div>
+<?php echo form_close(); ?>
