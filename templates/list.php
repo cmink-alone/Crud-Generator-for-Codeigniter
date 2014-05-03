@@ -21,7 +21,7 @@ for($i=0;$i<count($results);$i++)
         
 $clean_header = clean_header($header);
 array_shift($clean_header);
-$tmpl = array ( 'table_open'  => '<table class="table table-hover">' );
+$tmpl = array ( 'table_open'  => '<table class="table table-hover table-bordered">' );
 
 $this->table->set_template($tmpl); 
 $this->table->set_heading($clean_header); 
