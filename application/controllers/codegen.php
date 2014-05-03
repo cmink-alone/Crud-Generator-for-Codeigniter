@@ -126,6 +126,7 @@ class Codegen extends CI_Controller {
                         if($rules[$k][0] != 'required')
                         {
                             $required = '';
+                            $field_required = '';
 
                         }
                         else
@@ -161,14 +162,14 @@ class Codegen extends CI_Controller {
                              $add_form[] = '
                                         <p><label for="'.$k.'">'.$v.$required.'</label>                                
                                         <textarea id="'.$k.'" name="'.$k.'" '.$field_required.'><?php echo set_value(\''.$k.'\'); ?></textarea>
-                                        <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
+                                        <?php echo form_error(\''.$k.'\',\'<div class="ci_error">\',\'</div>\'); ?>
                                         </p>
                                         ';
                                         
                              $edit_form[] = '
                                         <p><label for="'.$k.'">'.$v.$required.'</label>                                
                                         <textarea id="'.$k.'" name="'.$k.'" '.$field_required.'><?php echo $result->'.$k.' ?></textarea>
-                                        <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
+                                        <?php echo form_error(\''.$k.'\',\'<div class="ci_error">\',\'</div>\'); ?>
                                         </p>
                                         ';
                                     
@@ -182,7 +183,7 @@ class Codegen extends CI_Controller {
                                         $enum = array('.$this->input->post($k.'default').'); 
                                         echo form_dropdown(\''.$k.'\', $enum); 
                                         ?>
-                                        <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
+                                        <?php echo form_error(\''.$k.'\',\'<div class="ci_error">\',\'</div>\'); ?>
                                         </p>
                                         ';
                             $edit_form[] = '
@@ -190,7 +191,7 @@ class Codegen extends CI_Controller {
                                         <?php
                                         $enum = array('.$this->input->post($k.'default').');                                                                    
                                         echo form_dropdown(\''.$k.'\', $enum,$result->'.$k.'); ?>
-                                        <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
+                                        <?php echo form_error(\''.$k.'\',\'<div class="ci_error">\',\'</div>\'); ?>
                                         </p>
                                         ';
                         }
@@ -200,13 +201,13 @@ class Codegen extends CI_Controller {
                             $add_form[] = '
                                         <p><label for="'.$k.'">'.$v.$required.'</label>                                
                                         <input id="'.$k.'" type="'.$type[$k][0].'" name="'.$k.'" value="<?php echo set_value(\''.$k.'\'); ?>" '.$field_required.' '.$max_length.' />
-                                        <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
+                                        <?php echo form_error(\''.$k.'\',\'<div class="ci_error">\',\'</div>\'); ?>
                                         </p>
                                         ';
                             $edit_form[] = '
                                         <p><label for="'.$k.'">'.$v.$required.'</label>                                
                                         <input id="'.$k.'" type="'.$type[$k][0].'" name="'.$k.'" value="<?php echo $result->'.$k.' ?>" '.$field_required.' '.$max_length.' />
-                                        <?php echo form_error(\''.$k.'\',\'<div>\',\'</div>\'); ?>
+                                        <?php echo form_error(\''.$k.'\',\'<div class="ci_error">\',\'</div>\'); ?>
                                         </p>
                                         ';
                         }                           
