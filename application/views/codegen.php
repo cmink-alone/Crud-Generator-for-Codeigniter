@@ -116,13 +116,14 @@ if(isset($alias))
             // {
                 // echo ' DATA_TYPE:'.form_input('DATA_TYPE['.$a->Field.']',$alias_2[$key]->DATA_TYPE);
             // }
-            echo ' min:'.form_input('min['.$a->Field.']');
-            echo ' max :'.form_input('max['.$a->Field.']',(empty($alias_2[$key]->CHARACTER_MAXIMUM_LENGTH)&&($alias_2[$key]->DATA_TYPE=='int'))? 11 : $alias_2[$key]->CHARACTER_MAXIMUM_LENGTH);
+            // echo ' max :'.form_input('rules['.$a->Field.'][]',(empty($alias_2[$key]->CHARACTER_MAXIMUM_LENGTH)&&($alias_2[$key]->DATA_TYPE=='int'))? 'max_length[11]' : !empty($alias_2[$key]->CHARACTER_MAXIMUM_LENGTH)?('max_length['.$alias_2[$key]->CHARACTER_MAXIMUM_LENGTH.']') : '' );
+            echo ' max :'.form_input('rules['.$a->Field.'][]',(empty($alias_2[$key]->CHARACTER_MAXIMUM_LENGTH)&&($alias_2[$key]->DATA_TYPE=='int'))? 'max_length[11]' :  (!is_null($alias_2[$key]->CHARACTER_MAXIMUM_LENGTH)?'max_length['.$alias_2[$key]->CHARACTER_MAXIMUM_LENGTH.']':'')) ;
             echo '<br>';
             echo form_checkbox('rules['.$a->Field.'][]', 'required', ((strtolower($a->Null)=='no') ? TRUE : FALSE) ) . ' required :: ';
             echo form_checkbox('rules['.$a->Field.'][]', 'trim', TRUE) . ' trim :: ';
             echo form_checkbox('rules['.$a->Field.'][]', 'valid_email', $email_default) . ' email :: ';
-            echo form_checkbox('rules['.$a->Field.'][]', 'xss_clean', TRUE) . ' xss_clean ::';
+            echo form_checkbox('rules['.$a->Field.'][]', 'integer', (($alias_2[$key]->DATA_TYPE=='int') ? TRUE : FALSE)) . 'integer ::';
+            echo form_checkbox('rules['.$a->Field.'][]', 'xss_clean', TRUE) . 'xss_clean ::';
             //echo ':: custom rule '. form_input('rules['.$a->Field.'][]', '');
             echo '</p>';
             
