@@ -96,7 +96,7 @@ class Codegen extends CI_Controller {
                 $label = $this->input->post('field');
                 $type = $this->input->post('type');
                 $length_min = $this->input->post('min');
-                $length_max = $this->input->post('max');
+                $length_max = $this->input->post('max_length');
                 $data_type = $this->input->post('DATA_TYPE');
                 
                 // looping of labels and forms , for edit and add form
@@ -109,7 +109,7 @@ class Codegen extends CI_Controller {
                         // var_dump($data_type);
                         // exit();
                         // echo "<br>";
-                        // var_dump($rules[$k]);
+
                         // echo "<br>";
                         // var_dump($type[$k]);
                         // echo "<br>";
@@ -136,7 +136,7 @@ class Codegen extends CI_Controller {
                         }
                          
                         if (isset($length_max[$k])) {
-                            $max_length = 'max="'.$length_max[$k].'"';
+                            $max_length = 'maxlength="'.$length_max[$k][0].'"';
                         }
                         // if ((trim($data_type))=='int')
                         // {
@@ -154,7 +154,7 @@ class Codegen extends CI_Controller {
                         // {
                         //     $type[$k][0]= 'email';
                         // }
-                        
+
                         
                         // this will create a form for Add and Edit , quite dirty for now
                         if($type[$k][0] == 'textarea')
@@ -171,17 +171,18 @@ class Codegen extends CI_Controller {
                                         <textarea id="'.$k.'" name="'.$k.'" '.$field_required.'><?php echo $result->'.$k.' ?></textarea>
                                         <?php echo form_error(\''.$k.'\',\'<div class="ci_error">\',\'</div>\'); ?>
                                         </p>
-                                        ';
+                                        '; 
                                     
                         }
+                        // dropdown
                         else if($this->input->post($k.'default'))
                         {
                             $enum = explode(',',$this->input->post($k.'default'));
                              $add_form[] = '
                                         <p><label for="'.$k.'">'.$v.$required.'</label>                                
                                         <?php
-                                        $enum = array('.$this->input->post($k.'default').'); 
-                                        echo form_dropdown(\''.$k.'\', $enum); 
+                                            $enum = array('.$this->input->post($k.'default').'); 
+                                            echo form_dropdown(\''.$k.'\', $enum); 
                                         ?>
                                         <?php echo form_error(\''.$k.'\',\'<div class="ci_error">\',\'</div>\'); ?>
                                         </p>
@@ -193,29 +194,37 @@ class Codegen extends CI_Controller {
                                         echo form_dropdown(\''.$k.'\', $enum,$result->'.$k.'); ?>
                                         <?php echo form_error(\''.$k.'\',\'<div class="ci_error">\',\'</div>\'); ?>
                                         </p>
-                                        ';
+                                        '; 
                         }
                         else
                         {
                             //input
                             $add_form[] = '
-                                        <p><label for="'.$k.'">'.$v.$required.'</label>                                
-                                        <input id="'.$k.'" type="'.$type[$k][0].'" name="'.$k.'" value="<?php echo set_value(\''.$k.'\'); ?>" '.$field_required.' '.$max_length.' />
-                                        <?php echo form_error(\''.$k.'\',\'<div class="ci_error">\',\'</div>\'); ?>
-                                        </p>
+                                        <div class="control-group">
+                                        <label for="'.$k.'">'.$v.$required.'</label> 
+                                            <div class="controls">                              
+                                                <input id="'.$k.'" name="'.$k.'" type="'.$type[$k][0].'" value="<?php echo set_value(\''.$k.'\'); ?>" '.$field_required.' '.$max_length.'  />
+                                                <?php echo form_error(\''.$k.'\',\'<div class="ci_error">\',\'</div>\'); ?>
+                                                <p class="help-block"></p>
+                                            </div>
+                                        </div>
                                         ';
                             $edit_form[] = '
-                                        <p><label for="'.$k.'">'.$v.$required.'</label>                                
-                                        <input id="'.$k.'" type="'.$type[$k][0].'" name="'.$k.'" value="<?php echo $result->'.$k.' ?>" '.$field_required.' '.$max_length.' />
-                                        <?php echo form_error(\''.$k.'\',\'<div class="ci_error">\',\'</div>\'); ?>
-                                        </p>
+                                        <div class="control-group">
+                                            <label class="control-label" for="'.$k.'">'.$v.$required.'</label>                                
+                                            <div class="controls">
+                                                <input id="'.$k.'" name="'.$k.'" type="'.$type[$k][0].'" value="<?php echo $result->'.$k.' ?>" '.$field_required.' '.$max_length.' />
+                                                <?php echo form_error(\''.$k.'\',\'<div class="ci_error">\',\'</div>\'); ?>
+                                                <p class="help-block"></p>
+                                            </div>
+                                        </div>
                                         ';
                         }                           
                          $ind_view_list[] = '
                                             <tr>
                                                 <td><label>'.$v.'</label></td>
                                                 <td><label><?php echo $result->'.$k.' ?></label></td>
-                                            </tr>';    
+                                            </tr>'; 
                     }
                     
                 }// end foreach()
@@ -250,6 +259,7 @@ class Codegen extends CI_Controller {
                 
                 
                 $fields = implode(',',$fields_list);
+ 
                 
                 $form_data = implode(','."\n\t\t\t\t\t\t\t\t",$form_val_data);
                 
@@ -326,21 +336,30 @@ class Codegen extends CI_Controller {
 
                 ///////////////// create controller
                 $controller = file_get_contents('templates/controller.php');
-                $search = array('{controller_name}', '{view}', '{table}','{validation_name}',
-                '{data}','{edit_data}','{controller_name_l}','{primaryKey}','{fields_list}'
-                ,'{model_name_1}', '{C_controller_name_l}',);
+                $search = array('{controller_name}',
+                                '{view}',
+                                '{table}',
+                                '{validation_name}',                
+                                '{data}',
+                                '{edit_data}',
+                                '{controller_name_l}',
+                                '{primaryKey}',
+                                '{fields_list}',
+                                '{model_name_1}',
+                                '{C_controller_name_l}'
+                                 );
                 $replace = array(
                                 ucfirst($this->input->post('controller')), 
                                 $this->input->post('view'),
                                 $this->input->post('table'),
-                                 $this->input->post('validation'),
-                                 implode(','."\n\t\t\t\t\t",$controller_form_data),
-                                 implode(','."\n\t\t\t\t\t",$controller_form_editdata),
-                                 $this->input->post('controller'),
-                                 $this->input->post('primaryKey'),
-                                 $fields,
-                                 ($this->input->post('table').'_model'),
-                                 str_replace('_', ' ', ucfirst($this->input->post('controller'))),
+                                $this->input->post('validation'),
+                                implode(','."\n\t\t\t\t\t",$controller_form_data),
+                                implode(','."\n\t\t\t\t\t",$controller_form_editdata),
+                                $this->input->post('controller'),
+                                $this->input->post('primaryKey'),
+                                $fields,
+                                ($this->input->post('table').'_model'),
+                                str_replace('_', ' ', ucfirst($this->input->post('controller'))),
 
                             );
 
@@ -427,7 +446,7 @@ class Codegen extends CI_Controller {
                                     );
                 $edit_replace = array(
                                         implode("\n",$edit_form),
-                                        '<?php echo form_hidden(\''.$this->input->post('primaryKey').'\',$result->'.$this->input->post('primaryKey').') ?>',
+                                        '<input type="hidden" value="<?php echo $result->'.$this->input->post('primaryKey').'; ?>" id="'.$this->input->post('primaryKey').'" name="'.$this->input->post('primaryKey').'">',
                                         ucfirst($this->input->post('table')),
                                         str_replace('_', ' ', ucfirst($this->input->post('table'))),
                                         str_replace('_', ' ', ucfirst($this->input->post('controller'))),
