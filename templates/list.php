@@ -2,6 +2,8 @@
 
 <?php
 echo anchor(site_url("{controller_name_l}/add/"),'Add a {C_table_name}','class="btn btn-primary"');
+echo "<br>";
+echo "<br>";
 if(!$results){
 	echo '<h1>{C_table_name} No Data</h1>';
 	exit;
