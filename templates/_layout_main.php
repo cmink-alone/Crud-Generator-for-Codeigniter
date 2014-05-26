@@ -1,8 +1,8 @@
-<?php $this->load->view('temp/components/page_head', $dataprovider); ?>
+<?php $this->load->view('temp/components/page_head', $results); ?>
 <body>
     <div class="navbar navbar-static-top navbar-inverse">
 	    <div class="navbar-inner">
-		    <a class="brand" href="<?php echo site_url('admin/dashboard'); ?>"><?php echo $dataprovider['meta_title']; ?></a>
+		    <a class="brand" href="<?php echo site_url('admin/dashboard'); ?>"><?php echo $meta_title; ?></a>
 		    <ul class="nav">
 			    <li class="active"><a href="<?php echo site_url('admin/dashboard'); ?>">Dashboard</a></li>
 			    <li><?php echo anchor('admin/page', 'pages'); ?></li>
@@ -25,7 +25,7 @@
 								</div>
 						</div>
 						<div class="span9">
-								<?php $this->load->view($subview,$dataprovider); ?>
+								<?php $this->load->view($sub_view,$results); ?>
 						</div>
 					</div>
 				</div>
@@ -40,4 +40,4 @@
 		</div>
 	</div>
 
-<?php $this->load->view('temp/components/page_tail', $dataprovider); ?>
+<?php $this->load->view('temp/components/page_tail', $results); ?>

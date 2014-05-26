@@ -11,6 +11,11 @@ class {controller_name} extends MY_Controller
 		$this->load->model('{model_name_1}');
 	}	
 	
+    /*************************Start Function index()***********************************/
+    //Owner : Madhuranga Senadheera
+    //
+    //@ type :
+    //#return type :
 	function index()
 	{
         // $this->load->model('{model_name_1}');
@@ -18,7 +23,7 @@ class {controller_name} extends MY_Controller
         $this->load->library('pagination');
 
         //paging
-        $config['base_url'] = site_url('{controller_name_l}/index');
+        $config['base_url'] = site_url('admin/{controller_name_l}/index');
         $config['total_rows'] = $this->{model_name_1}->count();
         $config['per_page'] = 10;	
         $this->pagination->initialize($config); 	
@@ -27,7 +32,9 @@ class {controller_name} extends MY_Controller
         // Last_Name will be converted into Last Name using humanize() function, under inflector helper of the CI core.
         $this->data['results'] = $this->{model_name_1}->get('{fields_list}', NULL, FALSE,$config['per_page'],$this->uri->segment(3));
         $this->data['meta_title'] = $this->data['meta_title'].' - {C_controller_name_l} list';
-        $this->load->view('temp/_layout_main',array('subview'=>'{view}_list','dataprovider'=>$this->data));
+        $this->data['sub_view'] = '{view}_list';
+
+        $this->load->view('temp/_layout_main',$this->data);
 
         // $this->load->view('temp/components/page_head');
         // $this->load->view('temp/admin/temp_nav');
@@ -36,7 +43,7 @@ class {controller_name} extends MY_Controller
         // $this->load->view('temp/components/page_tail');
         //$this->template->load('content', '{view}_list', $this->data); // if have template library , http://maestric.com/doc/php/codeigniter_template
 
-	}
+	}//Function End get()---------------------------------------------------FUNEND()
 
 	// function manage()
  //    {
@@ -58,64 +65,82 @@ class {controller_name} extends MY_Controller
 		
  //    }
 	
+    /*************************Start Function add()***********************************/
+    //Owner : Madhuranga Senadheera
+    //
+    //@ type :
+    //#return type :
     function add()
-    {        
+    {    
+        // load form vadaiton
         $this->load->library('form_validation');    
 		$this->data['custom_error'] = '';
         $this->form_validation->set_rules($this->{model_name_1}->rules);
+        // validate form
         if ($this->form_validation->run() == false)
         {
              $this->data['custom_error'] = (validation_errors() ? '<div class="form_error">'.validation_errors().'</div>' : false);
+             $this->data['result'] = array();
 
         }
         else
-        {                            
+        {               
             $data = array(
                     {data}
             );
            
-			if ($this->{model_name_1}->save($data) == TRUE)
-			{
-				//$this->data['custom_error'] = '<div class="form_ok"><p>Added</p></div>';
-				// or redirect
-				redirect(site_url('{controller_name_l}/index'));
-			}
-			else
-			{
-				$this->data['custom_error'] = '<div class="form_error"><p>An Error Occured.</p></div>';
+            // data save
+            if ($this->{model_name_1}->save($data) == TRUE)
+            {
+                //$this->data['custom_error'] = '<div class="form_ok"><p>Added</p></div>';
+                // or redirect
+                redirect(site_url('admin/{controller_name_l}/index'));
+            }
+            else
+            {
+                $this->data['custom_error'] = '<div class="form_error"><p>An Error Occured.</p></div>';
 
 			}
         }
         $this->data['meta_title'] = $this->data['meta_title'].' - Add a {C_controller_name_l} ';
 
-        $this->load->view('temp/_layout_modal',array('subview'=>'{view}_add','dataprovider'=>$this->data));
-        // $this->load->view('temp/components/page_head');
-        // $this->load->view('temp/admin/temp_nav');
-        // // $this->load->view('temp/temp_body');
-        // $this->load->view('{view}_add', $this->data);   
-        // $this->load->view('temp/components/page_tail');  
-        //$this->template->load('content', '{view}_add', $this->data);
-    }   
+        $this->data['sub_view'] = '{view}_add';
+
+        $this->load->view('temp/_layout_modal',$this->data); 
+
+    }//Function End add()---------------------------------------------------FUNEND()
     
-    function edit()
-    {        
+
+    /*************************Start Function edit()***********************************/
+    //Owner : Madhuranga Senadheera
+    //
+    //@ type :
+    //#return type :
+    function edit($id1)
+    {   
+        $ID = $id1;
+
+        // load form valition
         $this->load->library('form_validation');    
         $this->data['custom_error'] = '';
+        // validate form
         $this->form_validation->set_rules($this->{model_name_1}->rules);
         if ($this->form_validation->run() == false)
         {
+            // set error massage
              $this->data['custom_error'] = (validation_errors() ? '<div class="form_error">'.validation_errors().'</div>' : false);
+             // $this->data['result'];
 
         }
         else
-        {                            
+        {      
             $data = array(
                     {edit_data}
             );
-           
+            // data save                      
             if ($this->{model_name_1}->save($data, $this->input->post('{primaryKey}')) == TRUE)
             {
-                redirect(site_url('{controller_name_l}/index/'));
+                redirect(site_url('admin/{controller_name_l}/index/'));
             }
             else
             {
@@ -123,25 +148,32 @@ class {controller_name} extends MY_Controller
 
             }
         }
+        // load individula view
+        $this->data['result'] = $this->{model_name_1}->get('{fields_list}', $ID,TRUE,1,0);
+        $this->data['meta_title'] = $this->data['meta_title'].' - Edit {C_controller_name_l}';
 
-        $this->data['result'] = $this->{model_name_1}->get('{fields_list}', $this->uri->segment(3),TRUE,NULL,TRUE);
-            $this->data['meta_title'] = $this->data['meta_title'].' - Edit {C_controller_name_l}';
-        $this->load->view('temp/_layout_modal',array('subview'=>'{view}_edit','dataprovider'=>$this->data));
+        $this->data['sub_view'] = '{view}_edit';
+        // load view
+        $this->load->view('temp/_layout_modal',$this->data);
 
-        // $this->load->view('temp/components/page_head');
-        // $this->load->view('temp/admin/temp_nav');
-        // // $this->load->view('temp/temp_body');
-        // $this->load->view('{view}_edit', $this->data);      
-        // $this->load->view('temp/components/page_tail');
-        //$this->template->load('content', '{view}_edit', $this->data);
-    }
+    }//Function End edit()---------------------------------------------------FUNEND()
+    
 
-
-    function view()
+    /*************************Start Function view()***********************************/
+    //Owner : Madhuranga Senadheera
+    // View individual 
+    //@ type :
+    //#return type :
+    function view($id1)
     {
-        $ID =  $this->uri->segment(3);
-        $this->data['result'] = $this->{model_name_1}->get('{fields_list}', $this->uri->segment(3),TRUE,NULL,TRUE);
-        $this->load->view('temp/_layout_modal',array('subview'=>'{view}_view','dataprovider'=>$this->data));
+        // $ID =  $this->uri->segment(3);
+        $ID = $id1;
+        //  get data
+        $this->data['result'] = $this->{model_name_1}->get('{fields_list}', $ID,TRUE,1,0);
+        
+        $this->data['sub_view'] = '{view}_view';
+        // load view
+        $this->load->view('temp/_layout_modal',$this->data);
     }
 
 	
@@ -149,7 +181,7 @@ class {controller_name} extends MY_Controller
     {
             $ID =  $this->uri->segment(3);
             $this->{model_name_1}->delete($ID);             
-            redirect(site_url('{controller_name_l}/index'));
+            redirect(site_url('admin/{controller_name_l}/index'));
     }
 }
 

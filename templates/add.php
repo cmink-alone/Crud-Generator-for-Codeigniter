@@ -20,8 +20,7 @@
 		<div class="span4 pull-right"><?php echo anchor(site_url(), ' &copy; '. date('Y').' '.$site_name); ?></div>
 	</div>
 </div>
-<?php echo form_close(); ?>
-<?php echo base_url('dfghjkl/fghjk') ?>
+<?php echo form_close(); ?> 
 <br>
 <script src="<?php echo base_url() ?>asset/js/jquery-1.9.1.js"></script> <!-- jquery  -->
 <script src="<?php echo base_url() ?>asset/js/jqBootstrapValidation.js"></script> <!-- jqBootstrapValidation.js  -->
@@ -38,13 +37,12 @@ $(function() {
 		},
 		submitSuccess: function($form, event) {
 			alert("OK");
-			event.preventDefault();
+			// event.preventDefault();
 		},
 		filter: function() {
 			return $(this).is(":visible");
 		}
-	}
-);
+	});
 	$("a[data-toggle=\"tab\"]").click(function(e) {
 		e.preventDefault();
 		$(this).tab("show");
