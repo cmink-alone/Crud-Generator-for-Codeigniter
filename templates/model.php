@@ -1,5 +1,21 @@
 <?php
-
+/**
+*
+*
+* @copyright  2014
+* @license    None
+* @version    1.0
+* @link       None 
+*
+**/     
+        
+/***********************************************************************************/
+/*                                                                                 */
+/* File Name     : {table}_model.php                                               */
+/* Purpose       :                                                                 */
+/*                                                                                 */
+/*                                                                                 */
+/***********************************************************************************/
 class  {table}_model extends MY_Model
 {
     protected $_table_name      ='{table}';
@@ -23,7 +39,7 @@ class  {table}_model extends MY_Model
     }
 
     
-}// ------------------End User_M --------------Class{}
+}// ------------------End {table}_model --------------Class{}
 //Owner : Madhuranga Senadheera
 
 

@@ -14,9 +14,9 @@ $header = array_keys($results[0]);
 for($i=0;$i<count($results);$i++)
 {
     $id = array_values($results[$i]);
-    $results[$i]['View']     = anchor(site_url('{controller_name_l}/view/'.$id[0]),"<i class='icon-folder-open'></i>",'title="View"');
-    $results[$i]['Edit']     = anchor(site_url('{controller_name_l}/edit/'.$id[0]),"<i class='icon-pencil'></i>",'title="Edit"');
-    $results[$i]['Delete']   = anchor(site_url('{controller_name_l}/delete/'.$id[0]),"<i class='icon-remove'></i>",array('onClick'=>'return deletechecked(\' '.site_url('{controller_name_l}/delete/'.$id[0]).' \')', 'title'=>'Delete'));
+    $results[$i]['View']     = anchor(site_url('{controller_name_l}/view/'.$id[0]),"<i class='glyphicon glyphicon-folder-open'></i>",'title="View"');
+    $results[$i]['Edit']     = anchor(site_url('{controller_name_l}/edit/'.$id[0]),"<i class='glyphicon glyphicon-pencil'></i>",'title="Edit"');
+    $results[$i]['Delete']   = anchor(site_url('{controller_name_l}/delete/'.$id[0]),"<i class='glyphicon glyphicon-remove'></i>",array('onClick'=>'return deletechecked(\' '.site_url('{controller_name_l}/delete/'.$id[0]).' \')', 'title'=>'Delete'));
                                 // anchor(site_url('{controller_name_l}/delete/'.$id[0]),'Delete',array('onClick'=>'return deletechecked(\' '.base_url().'index.php/{controller_name_l}/delete/'.$id[0].' \')'));
 	array_shift($results[$i]);                        
 }

@@ -1,5 +1,22 @@
 <?php
-
+/**
+*
+*
+* @copyright  2014
+* @license    None
+* @version    1.0
+* @link       None
+* @since      Class available since Release 1.0
+*
+**/     
+        
+/***********************************************************************************/
+/*                                                                                 */
+/* File Name     : {controller_name}.php                                           */
+/* Purpose       :                                                                 */
+/*                                                                                 */
+/*                                                                                 */
+/***********************************************************************************/
 class {controller_name} extends MY_Controller
 {
     
