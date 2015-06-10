@@ -8,7 +8,3 @@ The Generator will create the following files.
 source http://projects.keithics.com/crud-generator-for-codeigniter/
 
 Upgrating...........
-
-
-
-
